@@ -17,6 +17,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/")
+    public String home(Model model) {
+        model.addAttribute("user", new User());
+        return "index";
+    }
+
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> users = userService.getAll();
