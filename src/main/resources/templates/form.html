@@ -4,12 +4,12 @@
     <title>Formulário de Usuário</title>
 </head>
 <body>
-<h1 th:text="${user.usr_email != null} ? 'Editar Usuário' : 'Novo Usuário'"></h1>
+<h1 th:text="${user.email != null} ? 'Editar Usuário' : 'Novo Usuário'"></h1>
 <form th:action="@{/add-user}" th:object="${user}" method="post">
-    <label for="name">Email:</label>
-    <input type="text" th:field="*{usr_email}" />
-    <label for="email">Password</label>
-    <input type="text" th:field="*{usr_pwd}" />
+    <label for="email">Email:</label>
+    <input type="text" th:field="*{email}" />
+    <label for="password">Password</label>
+    <input type="text" th:field="*{password}" />
     <button type="submit">Salvar</button>
 </form>
 </body>

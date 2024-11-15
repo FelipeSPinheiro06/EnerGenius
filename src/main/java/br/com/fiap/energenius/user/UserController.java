@@ -17,17 +17,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String home(Model model) {
         model.addAttribute("user", new User());
-        return "index";
+        return "login";
     }
 
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
-        return "list";
+        return "index";
     }
 
     @GetMapping("/form")
