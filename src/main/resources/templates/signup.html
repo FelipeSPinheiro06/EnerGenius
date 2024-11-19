@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Cadastro</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
         body {
@@ -52,29 +52,28 @@
 </head>
 <body>
 <div class="card p-4 shadow-lg" style="width: 100%; max-width: 400px;">
-    <h2 class="text-center text-light mb-4">EnerGenius</h2>
+    <h2 class="text-center text-light mb-4">Cadastro de Usuário</h2>
 
-    <!-- Mensagem de erro condicional -->
-    <div th:if="${param.error}" class="alert alert-danger" role="alert">
-        E-mail ou senha inválidos. Por favor, tente novamente.
+    <!-- Mensagem de erro -->
+    <div th:if="${error}" class="alert alert-danger" role="alert">
+        <p th:text="${error}"></p>
     </div>
 
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/signup}" method="post">
         <div class="mb-3">
             <label for="email" class="form-label">E-mail</label>
-            <input type="text" class="form-control" id="email" name="username" placeholder="Digite seu e-mail" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu e-mail" required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Senha</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha" required>
         </div>
-        <button type="submit" class="btn btn-primary w-100 mt-4">Entrar</button>
+        <button type="submit" class="btn btn-primary w-100 mt-4">Cadastrar</button>
     </form>
 
-    <!-- Botão de redirecionamento para a página de cadastro -->
+    <!-- Botão para redirecionar para a página de login -->
     <div class="mt-3 text-center">
-        <!-- Usando um link (a) para navegação -->
-        <a th:href="@{/signup}" class="btn btn-secondary w-100">Cadastrar-se</a>
+        <a th:href="@{/login}" class="btn btn-secondary w-100">Voltar ao Login</a>
     </div>
 </div>
 

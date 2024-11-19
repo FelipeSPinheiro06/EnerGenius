@@ -8,12 +8,12 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "Usuario")
+@Table(name = "customer")
 public class User {
 
     @Id
     String email;
 
-    @Min(8)
+    @Min(4)
     String password;
 }

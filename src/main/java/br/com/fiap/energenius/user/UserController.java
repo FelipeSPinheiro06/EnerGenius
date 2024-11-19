@@ -30,17 +30,21 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/form")
-    public String showForm(Model model) {
+    @GetMapping("/signup")
+    public String signUp(Model model) {
         model.addAttribute("user", new User());
-        return "form";
+        return "signup";
     }
 
-
-    @PostMapping("/add-user")
-    public String addUser(@ModelAttribute User user) {
-        user = userService.addUser(user);
-        return "redirect:/users";
+    @PostMapping("/signup")
+    public String addUser(@ModelAttribute User user, Model model) {
+        try {
+            userService.addUser(user);
+            return "redirect:/login";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "signup";
+        }
     }
 
 }
