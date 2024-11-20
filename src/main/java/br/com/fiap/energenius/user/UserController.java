@@ -1,5 +1,6 @@
 package br.com.fiap.energenius.user;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,5 +47,4 @@ public class UserController {
             return "signup";
         }
     }
-
 }

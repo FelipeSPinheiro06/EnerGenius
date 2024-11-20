@@ -14,6 +14,5 @@ public class User {
     @Id
     String email;
 
-    @Min(4)
     String password;
 }

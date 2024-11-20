@@ -1,5 +1,6 @@
 package br.com.fiap.energenius.auth;
 
+import br.com.fiap.energenius.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,73 +12,72 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.ArrayList;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        PasswordEncoder encoder = bCryptPasswordEncoder();
-        UserDetails user1 = User.withUsername("user1@example.com")
-                .password(encoder.encode("password1"))
-                .authorities("USER")
-                .build();
-
-        UserDetails user2 = User.withUsername("user2@example.com")
-                .password(encoder.encode("password2"))
-                .authorities("USER")
-                .build();
-
-        UserDetails user3 = User.withUsername("user3@example.com")
-                .password(encoder.encode("password3"))
-                .authorities("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1, user2, user3);
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+        return username -> userRepository.findByEmail(username)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getEmail(),
+                        user.getPassword(),
+                        new ArrayList<>()
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Forma atualizada para desabilitar o CSRF
+        http
+                // Configuração do CSRF (desabilite apenas se necessário)
+                .csrf(csrf -> csrf.disable())
+
+                // Autorização de requisições
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/resources/**").permitAll()
-                        .requestMatchers("/signup").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/login", "/signup", "/css/**", "/js/**", "/img/**").permitAll() // Permite acesso a rotas públicas
+                        .anyRequest().authenticated() // Todas as outras precisam de autenticação
                 )
+
+                // Configuração do formulário de login
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .permitAll()
-                        .defaultSuccessUrl("/users")
-                        .failureUrl("/login?error=true")
+                        .loginPage("/login") // Página personalizada para login
+                        .defaultSuccessUrl("/users", true) // Redireciona sempre para /users após login
+                        .failureUrl("/login?error=true") // Redireciona para /login em caso de erro
                 )
+
+                // Configuração do logout
                 .logout(logout -> logout
-                        .permitAll()
+                        .logoutUrl("/logout") // URL para logout
+                        .logoutSuccessUrl("/login?logout=true") // Redireciona para /login após logout
+                        .permitAll() // Permite acesso público ao logout
                 );
 
         return http.build();
     }
 
+
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authManager(HttpSecurity http, UserRepository userRepository) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
-        // Utilize o InMemoryUserDetailsManager apenas para testes em memória
         authBuilder
-                .userDetailsService(userDetailsService()) // Usa o bean definido com os usuários em memória
-                .passwordEncoder(bCryptPasswordEncoder());
+                .userDetailsService(userDetailsService(userRepository))
+                .passwordEncoder(passwordEncoder());
 
         return authBuilder.build();
     }
