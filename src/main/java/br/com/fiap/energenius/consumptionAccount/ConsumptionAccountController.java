@@ -22,6 +22,7 @@ public class ConsumptionAccountController {
 
     @PostMapping("/save-energy-data")
     public String sendData(@ModelAttribute ConsumptionAccount c) {
+        System.out.println(c);
         consumptionAccountService.sendData(c);
         return "redirect:/users";
     }

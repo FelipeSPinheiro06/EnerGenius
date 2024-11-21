@@ -11,16 +11,22 @@ import java.time.YearMonth;
 @Table(name = "consumption_account")
 public class ConsumptionAccount {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long consumption_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "consumption_id_seq", sequenceName = "consumption_id_seq", allocationSize = 1)
+    @Column(name = "consumption_id")
+    Long consumptionId;
 
-    float energy_consumption;
+    @Column(name = "energy_consumption")
+    float energyConsumption;
 
-    YearMonth month_year_bill;
+    @Column(name = "month_year_bill")
+    String monthYearBill;
 
-    float bill_cost;
+    @Column(name = "bill_cost")
+    float billCost;
 
     @ManyToOne
-    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
-    User costumer_email;
+    @JoinColumn(name = "customer_email", referencedColumnName = "email", nullable = false)
+    User costumerEmail;
 }
