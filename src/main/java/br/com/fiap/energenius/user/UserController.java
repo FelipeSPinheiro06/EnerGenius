@@ -1,5 +1,6 @@
 package br.com.fiap.energenius.user;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,24 +18,33 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/login")
+    public String home(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> users = userService.getAll();
         model.addAttribute("users", users);
-        return "list";
+        return "index";
     }
 
-    @GetMapping("/form")
-    public String showForm(Model model) {
+    @GetMapping("/signup")
+    public String signUp(Model model) {
         model.addAttribute("user", new User());
-        return "form";
+        return "signup";
     }
 
-
-    @PostMapping("/add-user")
-    public String addUser(@ModelAttribute User user) {
-        user = userService.addUser(user);
-        return "redirect:/users";
+    @PostMapping("/signup")
+    public String addUser(@ModelAttribute User user, Model model) {
+        try {
+            userService.addUser(user);
+            return "redirect:/login";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+            return "signup";
+        }
     }
-
 }
