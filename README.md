@@ -7,11 +7,6 @@
 - Gustavo Vinhola dos Santos - RM: 98826
 - Jean Carlos Oliveira Silva - RM: 550430
 
-## Recursos
-
-- [ ] CRUD de Usuários
-- [ ] CRUD de Feedbacks
-
 ## Saiba mais
 
 Para saber o essencial do nosso projeto, clique <a href="https://youtu.be/jEiaroLdLB8">nesse vídeo</a> e descubra:
