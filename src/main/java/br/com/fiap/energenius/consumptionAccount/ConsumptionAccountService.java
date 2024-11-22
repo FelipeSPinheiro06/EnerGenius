@@ -22,7 +22,7 @@ public class ConsumptionAccountService {
         String email = securityConfig.getLoggedInUserEmail();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        c.setCostumerEmail(user);
+        c.setEmail(user);
         System.out.println("ConsumptionAccount antes do save: " + c);
         return consumptionAccountRepository.save(c);
     }
