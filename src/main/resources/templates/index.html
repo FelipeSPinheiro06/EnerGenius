@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-<h1 style="text-align: center;" th:text="${pageTitle}">Energy Consumption Dashboard</h1>
+<h1 th:text="${pageTitle}">Energy Consumption Dashboard</h1>
 
 <!-- Button to redirect to form page -->
 <a href="/energy-data-form" class="form-button">Add Energy Data</a>
@@ -55,23 +55,18 @@
     <canvas id="barChart"></canvas>
 </div>
 
-<!-- Area Chart (using line with background fill) -->
+<!-- Area Chart -->
 <div class="chart-container">
     <canvas id="areaChart"></canvas>
 </div>
 
-<!-- Pie Chart -->
-<div class="chart-container">
-    <canvas id="pieChart"></canvas>
-</div>
-
 <script th:inline="javascript">
-    // Sample data for charts
-    const labels = /*[[${labels}]]*/ ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    const consumptionData = /*[[${consumptionData}]]*/ [150, 180, 170, 200, 190, 210, 220]; // kWh per month
-    const costData = /*[[${costData}]]*/ [75, 90, 85, 100, 95, 105, 110]; // Currency
+    // Dados dinâmicos passados pelo controlador
+    const labels = /*[[${labels}]]*/ [];
+    const consumptionData = /*[[${consumptionData}]]*/ [];
+    const costData = /*[[${costData}]]*/ [];
 
-    // Line Chart
+    // Configuração do gráfico de linha
     new Chart(document.getElementById('lineChart'), {
         type: 'line',
         data: {
@@ -116,7 +111,7 @@
         }
     });
 
-    // Bar Chart
+    // Configuração do gráfico de barras
     new Chart(document.getElementById('barChart'), {
         type: 'bar',
         data: {
@@ -160,7 +155,7 @@
         }
     });
 
-    // Area Chart
+    // Configuração do gráfico de área
     new Chart(document.getElementById('areaChart'), {
         type: 'line',
         data: {
@@ -199,42 +194,6 @@
                     },
                     grid: {
                         color: 'rgba(255, 255, 255, 0.1)'
-                    }
-                }
-            }
-        }
-    });
-
-    // Pie Chart
-    new Chart(document.getElementById('pieChart'), {
-        type: 'pie',
-        data: {
-            labels: ['Heating', 'Cooling', 'Lighting', 'Appliances'],
-            datasets: [{
-                label: 'Energy Distribution',
-                data: [40, 30, 20, 10], // Example distribution
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: '#ffffff'
                     }
                 }
             }

@@ -27,6 +27,6 @@ public class ConsumptionAccount {
     float billCost;
 
     @ManyToOne
-    @JoinColumn(name = "customer_email", referencedColumnName = "email", nullable = false)
+    @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
     User costumerEmail;
 }
