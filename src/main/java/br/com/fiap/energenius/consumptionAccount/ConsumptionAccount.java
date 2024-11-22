@@ -28,5 +28,5 @@ public class ConsumptionAccount {
 
     @ManyToOne
     @JoinColumn(name = "email", referencedColumnName = "email", nullable = false)
-    User costumerEmail;
+    User email;
 }
