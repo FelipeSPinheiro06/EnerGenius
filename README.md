@@ -14,7 +14,7 @@
 
 ## Saiba mais
 
-Para saber o essencial do nosso projeto, clique <a href="https://youtu.be/topLTWS2NCU">nesse vídeo</a> e descubra:
+Para saber o essencial do nosso projeto, clique <a href="https://youtu.be/jEiaroLdLB8">nesse vídeo</a> e descubra:
 1. Introdução
 2. Arquitetura
 3. Simulação
